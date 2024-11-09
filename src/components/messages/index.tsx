@@ -1,40 +1,29 @@
 import { IMessage } from "@/src/interface/message.interface";
-import api from "@/src/services/api";
-import { useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
-export function Messages() {
-  const [messages, setMessages] = useState<IMessage[]>();
-  const [error, setError] = useState();
+interface Props {
+  messages: IMessage[];
+}
 
-  const fetchData = async () => {
-    try {
-      const response = await api.get("/all-messages");
-      setMessages(response.data);
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [setMessages]);
+function MessageBlock(messages: Props) {
   return (
-    <View>
-      <Text className="text-lg font-bold text-center">Mensagens</Text>
-      {error && <Text>Error: {error}</Text>}
-      {messages ? (
-        <Text>
-          {messages.map((message) => (
-            <>
-              <Text>{message.id}</Text>
-              <Text>{message.content}</Text>
-            </>
-          ))}
-        </Text>
-      ) : (
-        <Text>Loading...</Text>
+    <View className="flex-col gap-4">
+      {messages.messages.map(
+        (message) =>
+          message.userID.type_user_id != 1 && (
+            <View className="bg-slate-400 py-4 px-6 rounded-2xl">
+              <View className="flex-row justify-between items-center">
+                <View className="flex-col gap-2">
+                  <Text className="text-slate-600">{message.userID.name}</Text>
+                  <Text>{message.content}</Text>
+                </View>
+                <View className="bg-green-600 w-4 h-4 rounded-full" />
+              </View>
+            </View>
+          )
       )}
     </View>
   );
 }
+
+export { MessageBlock };

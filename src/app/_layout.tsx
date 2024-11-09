@@ -1,6 +1,13 @@
+import { Header } from "../components/header";
 import "../styles/global.css";
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
-  return <Slot />;
+  return (
+    <Stack>
+      <Header />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="messages" options={{ headerShown: false }} />
+    </Stack>
+  );
 }
